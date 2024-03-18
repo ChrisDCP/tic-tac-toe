@@ -1,6 +1,6 @@
-//minuto 1:10:30 del tutorial
+//minuto 1:16:30 del tutorial
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './App.css'
 import confetti from 'canvas-confetti'
 import { Square } from './componentes/square.jsx'
@@ -41,9 +41,6 @@ function App() {
     //si el turno es x el siguiente es y y si no, es x
     const newTurn = turn ===TURNS.x? TURNS.o : TURNS.x
     setTurn(newTurn)
-    //guardar partida
-    window.localStorage.setItem('board', JSON.stringify(newBoard))
-    window.localStorage.setItem('turn', newTurn)
     //revisar si hay ganador
     const newWinner = checkWinner(newBoard)
     if(newWinner){
@@ -53,6 +50,14 @@ function App() {
       setwinner(false)
     }
   }
+
+  //Se ejecuta almenos una ves
+useEffect(()=>{
+SaveGameToStorage({
+  board: newBoard,
+  turn: newTurn
+})
+},[turn,board])
 
   return (
     <main className="board">
